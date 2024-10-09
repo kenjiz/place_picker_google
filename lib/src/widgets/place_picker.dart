@@ -143,6 +143,12 @@ class PlacePicker extends StatefulWidget {
   /// Custom map style
   final String? mapStyle;
 
+  /// Zoom gestures
+  final bool zoomGesturesEnabled;
+
+  /// Zoom controls
+  final bool zoomControlsEnabled;
+
   const PlacePicker({
     super.key,
     required this.apiKey,
@@ -173,6 +179,8 @@ class PlacePicker extends StatefulWidget {
     this.pinPointingPinWidgetBuilder,
     this.autocompletePlacesSearchRadius,
     this.mapStyle,
+    this.zoomControlsEnabled = true,
+    this.zoomGesturesEnabled = true,
   });
 
   @override
@@ -346,6 +354,8 @@ class PlacePickerState extends State<PlacePicker> with TickerProviderStateMixin 
       onCameraMoveStarted: onCameraMoveStarted,
       onCameraMove: onCameraMove,
       style: widget.mapStyle,
+      zoomControlsEnabled: widget.zoomControlsEnabled,
+      zoomGesturesEnabled: widget.zoomGesturesEnabled,
     );
   }
 
