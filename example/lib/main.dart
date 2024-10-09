@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -40,8 +42,7 @@ class GooglePlacePickerExample extends StatefulWidget {
   const GooglePlacePickerExample({super.key});
 
   @override
-  State<GooglePlacePickerExample> createState() =>
-      _GooglePlacePickerExampleState();
+  State<GooglePlacePickerExample> createState() => _GooglePlacePickerExampleState();
 }
 
 class _GooglePlacePickerExampleState extends State<GooglePlacePickerExample> {

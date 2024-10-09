@@ -176,8 +176,7 @@ class PlacePicker extends StatefulWidget {
 }
 
 /// Place picker state
-class PlacePickerState extends State<PlacePicker>
-    with TickerProviderStateMixin {
+class PlacePickerState extends State<PlacePicker> with TickerProviderStateMixin {
   /// Map Controller Completer
   final Completer<GoogleMapController> mapController = Completer();
 
@@ -264,8 +263,7 @@ class PlacePickerState extends State<PlacePicker>
 
   void _initializePositionAndMarkers() async {
     try {
-      final LatLng position =
-          widget.initialLocation ?? await _getCurrentLocation();
+      final LatLng position = widget.initialLocation ?? await _getCurrentLocation();
 
       if (mounted) {
         setState(() {
@@ -330,9 +328,7 @@ class PlacePickerState extends State<PlacePicker>
   Widget _buildGoogleMap() {
     return GoogleMap(
       initialCameraPosition: CameraPosition(
-        target: widget.initialLocation ??
-            _currentLocation ??
-            PlacePicker.defaultLocation,
+        target: widget.initialLocation ?? _currentLocation ?? PlacePicker.defaultLocation,
         zoom: _getInitialZoom(),
       ),
       minMaxZoomPreference: widget.minMaxZoomPreference,
@@ -349,15 +345,11 @@ class PlacePickerState extends State<PlacePicker>
   }
 
   double _getInitialZoom() {
-    return (_currentLocation == null && widget.initialLocation == null)
-        ? 4
-        : _zoom;
+    return (_currentLocation == null && widget.initialLocation == null) ? 4 : _zoom;
   }
 
   Widget _buildLoadingIndicator() {
-    return Platform.isiOS
-        ? const CupertinoActivityIndicator()
-        : const Center(child: CircularProgressIndicator());
+    return Platform.isiOS ? const CupertinoActivityIndicator() : const Center(child: CircularProgressIndicator());
   }
 
   Widget _buildSearchInput() {
@@ -424,9 +416,7 @@ class PlacePickerState extends State<PlacePicker>
     /// if not pin pointing search
     /// set pin state as dragging and update and
     /// call the places API after the debounce is completed.
-    if (widget.usePinPointingSearch &&
-        _pinState == PinState.dragging &&
-        cameraPosition != null) {
+    if (widget.usePinPointingSearch && _pinState == PinState.dragging && cameraPosition != null) {
       _debouncePinPointing(cameraPosition!.target);
     }
 
@@ -474,8 +464,7 @@ class PlacePickerState extends State<PlacePicker>
   /// Debounce function for pin-pointing search
   void _debouncePinPointing(LatLng target) {
     _debounce?.cancel();
-    _debounce =
-        Timer(Duration(milliseconds: widget.pinPointingDebounceDuration), () {
+    _debounce = Timer(Duration(milliseconds: widget.pinPointingDebounceDuration), () {
       animateToLocation(target);
     });
   }
@@ -492,10 +481,8 @@ class PlacePickerState extends State<PlacePicker>
         elevation: widget.myLocationFABConfig.elevation,
         mini: widget.myLocationFABConfig.mini,
         tooltip: widget.myLocationFABConfig.tooltip,
-        backgroundColor: widget.myLocationFABConfig.backgroundColor ??
-            Theme.of(context).primaryColor,
-        foregroundColor: widget.myLocationFABConfig.foregroundColor ??
-            Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: widget.myLocationFABConfig.backgroundColor ?? Theme.of(context).primaryColor,
+        foregroundColor: widget.myLocationFABConfig.foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
         onPressed: _locateMe,
         child: widget.myLocationFABConfig.child ?? const Icon(Icons.gps_fixed),
       ),
@@ -574,8 +561,7 @@ class PlacePickerState extends State<PlacePicker>
 
     if (place.isEmpty) return;
 
-    final RenderBox? searchInputBox =
-        searchInputKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? searchInputBox = searchInputKey.currentContext?.findRenderObject() as RenderBox?;
 
     _suggestionsOverlayEntry = _createSuggestionsOverlay(searchInputBox);
 
@@ -604,9 +590,7 @@ class PlacePickerState extends State<PlacePicker>
                   SizedBox(
                     height: 24,
                     width: 24,
-                    child: Platform.isiOS
-                        ? const CupertinoActivityIndicator()
-                        : const CircularProgressIndicator(),
+                    child: Platform.isiOS ? const CupertinoActivityIndicator() : const CircularProgressIndicator(),
                   ),
                   const SizedBox(width: 24),
                   Expanded(
@@ -638,8 +622,7 @@ class PlacePickerState extends State<PlacePicker>
       );
 
       if (response.statusCode != 200) {
-        throw Exception(
-            'Failed to load auto complete predictions of place: $place.');
+        throw Exception('Failed to load auto complete predictions of place: $place.');
       }
 
       final responseJson = jsonDecode(response.body);
@@ -655,8 +638,7 @@ class PlacePickerState extends State<PlacePicker>
   }
 
   /// Parses the `predictions` into `RichSuggestion` array.
-  List<RichSuggestion> _parseAutoCompleteSuggestions(
-      List<dynamic>? predictions) {
+  List<RichSuggestion> _parseAutoCompleteSuggestions(List<dynamic>? predictions) {
     if (predictions == null || predictions.isEmpty) {
       return [
         RichSuggestion(
@@ -688,8 +670,7 @@ class PlacePickerState extends State<PlacePicker>
 
   /// Display autocomplete suggestions with the overlay.
   void displayAutoCompleteSuggestions(List<RichSuggestion> suggestions) {
-    final RenderBox? searchInputBox =
-        searchInputKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? searchInputBox = searchInputKey.currentContext?.findRenderObject() as RenderBox?;
 
     _clearOverlay();
 
@@ -853,17 +834,12 @@ class PlacePickerState extends State<PlacePicker>
 
       final geocodingResponse = geocodingResponseFromJson(response.body);
 
-      if (geocodingResponse.results != null &&
-          geocodingResponse.results!.isNotEmpty) {
+      if (geocodingResponse.results != null && geocodingResponse.results!.isNotEmpty) {
         /// Loop through all the results provided by google geocoding API
-        for (int resultIdx = 0;
-            resultIdx < geocodingResponse.results!.length;
-            resultIdx++) {
-          final GeocodingResultGG geocodingResultRaw =
-              geocodingResponse.results![resultIdx];
+        for (int resultIdx = 0; resultIdx < geocodingResponse.results!.length; resultIdx++) {
+          final GeocodingResultGG geocodingResultRaw = geocodingResponse.results![resultIdx];
 
-          if (geocodingResultRaw.addressComponents != null &&
-              geocodingResultRaw.addressComponents!.isNotEmpty) {
+          if (geocodingResultRaw.addressComponents != null && geocodingResultRaw.addressComponents!.isNotEmpty) {
             /// Initialize the short and long variables
             String name = "";
             String? routeShortName,
@@ -895,8 +871,7 @@ class PlacePickerState extends State<PlacePicker>
 
             /// Loop through all the address components for each results
             for (int addressComponentsIdx = 0;
-                addressComponentsIdx <
-                    geocodingResultRaw.addressComponents!.length;
+                addressComponentsIdx < geocodingResultRaw.addressComponents!.length;
                 addressComponentsIdx++) {
               final AddressComponentGG addressComponentRaw =
                   geocodingResultRaw.addressComponents![addressComponentsIdx];
@@ -977,10 +952,8 @@ class PlacePickerState extends State<PlacePicker>
                   shortName: countryShortName,
                 )
                 ..locality = AddressComponent(
-                  longName:
-                      localityLongName ?? administrativeAreaLevel1LongName,
-                  shortName:
-                      localityShortName ?? administrativeAreaLevel1ShortName,
+                  longName: localityLongName ?? administrativeAreaLevel1LongName,
+                  shortName: localityShortName ?? administrativeAreaLevel1ShortName,
                 )
                 ..administrativeAreaLevel1 = AddressComponent(
                   longName: administrativeAreaLevel1LongName,
@@ -1049,8 +1022,7 @@ class PlacePickerState extends State<PlacePicker>
         final nearbyPlace = NearbyPlace()
           ..name = item['name']
           ..icon = item['icon']
-          ..latLng = LatLng(item['geometry']['location']['lat'],
-              item['geometry']['location']['lng']);
+          ..latLng = LatLng(item['geometry']['location']['lat'], item['geometry']['location']['lng']);
 
         nearbyPlaces.add(nearbyPlace);
       }
@@ -1094,12 +1066,13 @@ class PlacePickerState extends State<PlacePicker>
     if (permission == LocationPermission.deniedForever) {
       /// Permissions are denied forever, handle appropriately.
       /// return widget.defaultLocation;
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
     try {
       final locationData = await Geolocator.getCurrentPosition(
-        timeLimit: const Duration(seconds: 30),
+        locationSettings: const LocationSettings(
+          timeLimit: Duration(seconds: 30),
+        ),
       );
       LatLng target = LatLng(locationData.latitude, locationData.longitude);
       debugPrint('target:$target');
@@ -1121,8 +1094,7 @@ class PlacePickerState extends State<PlacePicker>
           builder: (BuildContext ctx) {
             return CupertinoAlertDialog(
               title: const Text("Location is disabled"),
-              content: const Text(
-                  "To use location, go to your Settings App > Privacy > Location Services."),
+              content: const Text("To use location, go to your Settings App > Privacy > Location Services."),
               actions: [
                 CupertinoDialogAction(
                   child: const Text("Cancel"),
@@ -1145,12 +1117,11 @@ class PlacePickerState extends State<PlacePicker>
         builder: (BuildContext ctx) {
           return AlertDialog(
             title: const Text("Location is disabled"),
-            content: const Text(
-                "The app needs to access your location. Please enable location service."),
+            content: const Text("The app needs to access your location. Please enable location service."),
             actions: [
               TextButton(
                 child: const Text("Cancel"),
-                onPressed: () async {
+                onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
