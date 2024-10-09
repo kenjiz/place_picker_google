@@ -140,6 +140,9 @@ class PlacePicker extends StatefulWidget {
   /// according to the current location
   final num? autocompletePlacesSearchRadius;
 
+  /// Custom map style
+  final String? mapStyle;
+
   const PlacePicker({
     super.key,
     required this.apiKey,
@@ -169,6 +172,7 @@ class PlacePicker extends StatefulWidget {
     this.pinPointingDebounceDuration = 500,
     this.pinPointingPinWidgetBuilder,
     this.autocompletePlacesSearchRadius,
+    this.mapStyle,
   });
 
   @override
@@ -341,6 +345,7 @@ class PlacePickerState extends State<PlacePicker> with TickerProviderStateMixin 
       onCameraIdle: onCameraIdle,
       onCameraMoveStarted: onCameraMoveStarted,
       onCameraMove: onCameraMove,
+      style: widget.mapStyle,
     );
   }
 
